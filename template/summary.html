@@ -1,0 +1,14 @@
+
+<div id="alert-box"></div>
+<div id="image-box"></div>
+<br>
+<form id="upload-form">
+    {% csrf_token %}
+    {{form.as_p}}
+</form>
+<br>
+<div class="summary">
+    <h2>Summary</h2>
+    <p>This is a summary of the PDF file.</p>
+</div>
+<div id="progress-box" class="not-visible"></div>
