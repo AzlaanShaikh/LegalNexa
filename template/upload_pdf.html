@@ -1,155 +1,37 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Upload PDF</title>
-    <style>
-        /* Style the file input button */
-        .file-upload-button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            background-color: rgb(30, 129, 228);
-            transition: 0.5s;
-        }
-        .file-upload-button:hover{
-            color: rgb(238, 241, 241);
-            background-color: rgb(53, 187, 216);
-
-        }
-        /* Hide the default file input button */
-        .file-input {
-            display: none;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            
-        }
-        .container {
-            background-color: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            
-        }
-       
-        .upload{
-            margin-bottom: 50px;
-
-        }
-        form{
-            padding: 0;
-        }
-#submit-button {
-    margin-top: 5%;
-    background-color: #04AA6D; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    transition-duration: 0.4s;
-    margin-bottom: 30px;
-    margin-left: 19px;
-    border-radius: 34px;
-}
-
-#submit-button:hover {
-  background-color: #30e2a1; /* Green */
-  color: white;
-}
-#nav{
-    height: 80px;
-    width: 100%;
-   color: antiquewhite;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    position: fixed;
-    mix-blend-mode: difference;
-    z-index:102;
-}
-#nav img{
-    height: 27px;
-}
-#nav-part2{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-}
-
-#nav #circle{
-    height: 18px;
-    width: 18px;
-    border-radius: 50%;
-    background-color: #fff;
-}
-#nav h4{
-    font-size: 16px;
-    font-weight: 500;
-    text-transform: uppercase;
-}
-#nav h4:nth-child(1){
-    border-bottom: 1.5px solid #fff;
-}
-.summary{
-    color: #fff;
-}
-    </style>
+    <link rel="stylesheet" href="/static/sum.css">
 </head>
-<body>
-    <div id="nav">
-        <h3>Attendify</h3>
-        <div id="nav-part2">
-            <h4>Home</h4>
-            <h4>About Us</h4>
-            <h4></h4>
-            <h4>Contact</h4>
-        </div>
-        <div id="nav-part3">
-            <div id="circle"></div>
-        </div>
-    </div>
-    
-    <div class="container">
-        <div class="upload">
-        <h1 ">Upload PDF</h1>
-        <!-- Display a custom-styled button and hide the default file input -->
-        <label for="file-input" class="file-upload-button">Choose PDF File</label>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" name="file" id="file-input" class="file-input">
-            <p id="file-name" style="color: #fff;">No file selected</p> 
-            <button type="submit" id="submit-button">Upload</button>
-        </form>
-        <div class="summary" >
-            <h2>Summary</h2>
-            <p>This is a summary of the PDF file.</p>
-        </div>
-    </div>
 
-    </div>
-    <script>
-        // JavaScript to update the file name display
-        const fileInput = document.getElementById('file-input');
-        const fileNameParagraph = document.getElementById('file-name');
-
-        fileInput.addEventListener('change', function() {
-            // Display the selected file name when a file is selected
-            fileNameParagraph.textContent = this.files[0].name;
-        });
-    </script>
+<body >
+        <div class="main" style="height: 120vh">
+            <div id="nav">
+                <h3>LegalNexa</h3>
+                <div id="nav-part2">
+                    <h4>Home</h4>
+                    <h4>About Us</h4>
+                    <h4>Contact</h4>
+                </div>
+                <div id="nav-part3">
+                    <div id="circle"></div>
+                </div>
+            </div>
+            <div id="formed">
+                <h1></h1>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="file-input"><p id="uploadh1">Upload your PDF</p></label>
+                    <input type="file" name="file" id="file-input" class="file-input"><br>
+                    <button type="submit" id="submit-button">Upload</button>
+                </form>
+            </div>
+            <div class="summary" style="color: aliceblue;" ><p style="word-wrap: break-word;">{{result}}
+            </p>
+            </div>
+        </div>
+        
 </body>
 </html>
