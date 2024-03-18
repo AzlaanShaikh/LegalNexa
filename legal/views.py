@@ -54,7 +54,7 @@ def process_file(model_instance):
         for page in pages:
             text = pytesseract.image_to_string(page, lang='eng')
             extracted_text += text + "\n"
-            print('PDF uploaded')
+            print('Page uploaded')
         return summarizer(extracted_text)
     except Exception as e:
         # Handle exceptions (e.g., log the error)
