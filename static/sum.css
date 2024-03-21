@@ -93,3 +93,29 @@
     word-wrap: break-word;
     background-color: rgb(85, 81, 81);
 }
+#file-input{
+    width: 200px;
+    background: rgb(238, 233, 233);
+    border: none;
+    outline: none;
+    box-shadow: 2px 5px 2px black;
+    border-radius: 50px;
+    color: black;
+    
+}
+::-webkit-file-upload-button{
+    border: none;
+    background-color: rgb(61, 146, 236);
+    border-radius: 50px;
+    height: 48px;
+    color: rgb(4, 3, 3);
+    width: 100px;
+    box-shadow: 4px 1px 1px grey;
+}
+::-webkit-file-upload-button:hover{
+    background-color: rgb(99, 99, 239);
+}
+#file-input:hover{
+    background-color: rgb(112, 109, 109);
+    color:blanchedalmond
+}
