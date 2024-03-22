@@ -61,6 +61,7 @@
         display: flex;
         flex-direction: column;
     }
+    /* Add custom CSS styles to format JSON output */
     .message-content pre {
         white-space: pre-wrap; /* Preserve line breaks */
         overflow-x: auto; /* Enable horizontal scroll if needed */
@@ -70,19 +71,49 @@
         border: 1px solid #ddd; /* Add border for separation */
         border-radius: 5px; /* Add border radius for rounded corners */
     }
+
+    
+#nav{
+    justify-content: space-between;
+}
+#nav2{
+    display: flex;
+    margin-right: 675px;
+    gap:30px;
+}
+h4{
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    text-transform: uppercase;
+}
+a{
+    color: #ddd;
+}
 </style>
 {% endblock %}
 
 
 {% block content %}
+<script>hljs.highlightAll();</script>
+
 <div class="chat-container">
     <div class="card flex-grow-1">
-        <div class="card-header bg-primary text-white">Chat</div>
+        <div class="card-header bg-dark text-white d-flex" id="nav">
+            <h3>LegalNexa</h3>
+            <div id="nav2">
+                    <h4 class="text-md"><a href="/"> Home</a></h4>
+                    <h4><a href="upload_pdf">PDF Summarizer</a></h4>
+                    <h4><a href="/map">Map</a></h4>
+                </div>
+        </div>
+        <div class="card-header bg-dark text-white">Chat</div>
+        
         {% if user.is_authenticated %}
-        <div class="card-header bg-primary text-white"> <b>Welcome, {{user.username}}</b> <a style="color:yellowgreen"
+        <div class="card-header bg-dark text-white"> <b>Welcome, {{user.username}}</b> <a style="color:yellowgreen"
                 href="logout">Logout</a></div>
         {% else %}
-        <div class="card-header bg-primary text-white"><a style="color:yellowgreen" href="login">LogIn</a> <a
+        <div class="card-header bg-dark text-white"><a style="color:yellowgreen" href="login">LogIn</a> <a
                 style="color:yellowgreen" href="register">Register</a></div>
         {% endif %}
         <div class="card-body messages-box">

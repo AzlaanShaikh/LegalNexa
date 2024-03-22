@@ -3,28 +3,49 @@
 
 <head>
     <title>Upload PDF</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/sum.css">
+    <style>
+        #nav{
+    justify-content: space-between;
+}
+#nav2{
+    display: flex;
+    margin-right: 675px;
+    gap:30px;
+}
+h4{
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    text-transform: uppercase;
+}
+a{
+    color: #ddd;
+}
+h1{
+    margin-left: -49px
+}
+    </style>
+
 </head>
 
 <body >
+    
         <div class="main" style="height: 120vh">
-            <div id="nav">
+            <div class="card-header bg-dark text-white d-flex" id="nav">
                 <h3>LegalNexa</h3>
-                <div id="nav-part2">
-                    <h4><a href="/"> Home</a></h4>
-                    <h4>About Us</h4>
-                    <h4>Contact</h4>
-                    <h4><a href="/map"> Map</a></h4>
-                </div>
-                <div id="nav-part3">
-                    <div id="circle"></div>
-                </div>
+                <div id="nav2">
+                        <h4 class="text-md"><a href="/"> Home</a></h4>
+                        <h4><a href="upload_pdf">PDF Summarizer</a></h4>
+                        <h4><a href="/map">Map</a></h4>
+                    </div>
             </div>
             <div id="formed">
                 <h1></h1>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <label for="file-input"><p id="uploadh1">Upload your PDF</p></label>
+                    <div><label for="file-input"><h1>Upload your PDF</h1></label></div>
                     <input type="file" name="file" id="file-input" class="file-input"><br>
                     <button type="submit" id="submit-button">Upload</button>
                 </form>
@@ -33,6 +54,8 @@
             </p>
             </div>
         </div>
-        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

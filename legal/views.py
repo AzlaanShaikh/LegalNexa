@@ -1,4 +1,5 @@
 import os
+from django.template.defaultfilters import linebreaksbr
 import pytesseract
 from pdf2image import convert_from_path
 from django.shortcuts import render
@@ -28,7 +29,9 @@ def upload_pdf(request):
             result = process_file(latest_instance)
             # Handle the result, e.g., store it in a database
             print(result)
-            return render(request, 'upload_pdf.html', {'form': form,'result':result},)
+            wrapped_result = linebreaksbr(result)
+            
+            return render(request, 'upload_pdf.html', {'form': form,'result':wrapped_result},)
     else:
         form = PDFUploadForm()
     return render(request, 'upload_pdf.html', {'form': form})
@@ -63,15 +66,38 @@ def process_file(model_instance):
 
 def summarizer(text):
     print("Starting summary")
-    llm = ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo')
+    llm = ChatOpenAI(temperature=1, model_name='gpt-3.5-turbo')
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=10000, chunk_overlap=20)
     chunks = text_splitter.create_documents([text])
     print(chunks)
-    chain = load_summarize_chain(
-    llm,
+    chunks_prompt="""
+    Please summarize the below Document:
+    Document:`{text}'
+    Summary:
+    """
+    map_prompt_template=PromptTemplate(input_variables=['text'],
+                                            template=chunks_prompt)
+    
+    final_combine_prompt='''
+    Provide a final summary of the entire Document with these important points.
+    Add a Title on what Does this document present,
+    Start the precise summary with an introduction and provide the
+    summary in number points for the document.
+    Document: `{text}`
+    '''
+    final_combine_prompt_template=PromptTemplate(input_variables=['text'],
+                                            template=final_combine_prompt)
+    summary_chain = load_summarize_chain(
+    llm=llm,
     chain_type='map_reduce',
+    map_prompt=map_prompt_template,
+    combine_prompt=final_combine_prompt_template,
     verbose=False
     )
-    summary = chain.run(chunks)
+    output = summary_chain.run(chunks)
+    return output
 
-    return summary
+
+def map(request):
+
+    return render(request,'map.html')

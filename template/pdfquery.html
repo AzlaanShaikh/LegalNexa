@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+    body,
+    html {
+        height: 100%;
+    }
+
+    .messages-box {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .messages-list {
+        padding-left: 0;
+    }
+
+    .message {
+        margin-bottom: 15px;
+        list-style: none;
+    }
+
+    .message-text {
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .sent {
+        background-color: #dcf8c6;
+        align-self: flex-end;
+    }
+
+    .received {
+        background-color: #f1f0f0;
+        align-self: flex-start;
+    }
+
+    .message-form {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        background-color: #f8f9fa;
+    }
+
+    .message-input {
+        flex: 1;
+        border-radius: 0;
+        border-right: none;
+    }
+
+    .btn-send {
+        border-radius: 0;
+    }
+
+    .chat-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    #form1{
+        display: flex;
+        
+    }
+    #belownav{
+        display: flex;
+        justify-content: space-between;
+    }
+    #uploadform{
+        display: flex;
+        column-gap: 20px;
+    }
+
+    
+#file-input{
+    width: 220px;
+    background: rgb(238, 233, 233);
+    border: none;
+    outline: none;
+    box-shadow: 2px 5px 2px black;
+    border-radius: 50px;
+    color: black;
+    
+}
+::-webkit-file-upload-button{
+    border: none;
+    background-color: rgb(61, 146, 236);
+    border-radius: 50px;
+    height: 48px;
+    color: rgb(4, 3, 3);
+    width: 100px;
+    box-shadow: 4px 1px 1px grey;
+}
+::-webkit-file-upload-button:hover{
+    background-color: rgb(99, 99, 239);
+}
+#file-input:hover{
+    background-color: rgb(112, 109, 109);
+    color:blanchedalmond
+}
+#submit-button{
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: black;
+    
+}
+#submit-button:hover{
+    background-color: lightslategray;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="chat-container">
+    <div class="card flex-grow-1">
+        <div class="card-header bg-primary text-white">Chat</div>
+        {% if user.is_authenticated %}
+        <div class="card-header bg-primary text-white" id="belownav"> 
+            <div><b>Welcome, {{user.username}}</b> <a style="color:yellowgreen"
+                href="logout">Logout</a>
+            </div>
+                <form method="post" enctype="multipart/form-data" id="uploadform">
+                    {% csrf_token %}
+                    <input type="file" name="file" id="file-input" class="file-input"><br>
+                    <button type="submit" id="submit-button">Upload</button>
+                </form>
+            </div>
+        {% else %}
+        <div class="card-header bg-primary text-white"><a style="color:yellowgreen" href="login">LogIn</a> <a
+                style="color:yellowgreen" href="register">Register</a>
+            
+            </div>
+        {% endif %}
+        <div class="card-body messages-box">
+
+            <ul class="list-unstyled messages-list">
+
+                <!-- <li class="message received">
+                    <div class="message-text">
+                        <div class="message-sender">
+                            <b>AI Chatbot</b>
+                        </div>
+                        <div class="message-content">
+                             Hi {{user.username}}, I am your AI Chatbot, you can ask me anything.   it will display the current loggedin user --><!--
+                        </div>
+                    </div>
+                </li> -->
+
+
+                {% for chat in chats %}
+                {% if chat.user == request.user%}
+
+                <li class="message sent">
+                    <div class="message-text">
+                        <div class="message-sender">
+                            <b>You</b>
+                        </div>
+                        <div class="message-content">
+                            {{chat.message}} <!--  it will display the current loggedin user -->
+                        </div>
+                    </div>
+                </li>
+
+                <li class="message received">
+                    <div class="message-text">
+                        <div class="message-sender">
+                            <b>Chatbot</b>
+                        </div>
+                        <div class="message-content">
+                            <pre>{{chat.response}}</pre> <!--  it will display the current loggedin user -->
+                        </div>
+                    </div>
+                </li>
+
+                {% endif %}
+                {% endfor %}
+
+            </ul>
+
+        </div>
+        <br><br>
+        <br><br>
+        <br><br>
+    </div>
+    <form class="message-form">
+        {%csrf_token%}
+        <div class="input-group">
+            <input type="text" class="form-control message-input" placeholder="Type your message...">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary btn-send">Send</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    const messagesList = document.querySelector('.messages-list');
+    const messageForm = document.querySelector('.message-form');
+    const messageInput = document.querySelector('.message-input');
+
+    messageForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const message = messageInput.value.trim();
+        if (message.length === 0) {
+            return;
+        }
+
+        const messageItem = document.createElement('li');
+        messageItem.classList.add('message', 'sent');
+        messageItem.innerHTML = `
+          <div class="message-text">
+              <div class="message-sender">
+                  <b>You</b>
+              </div>
+              <div class="message-content">
+                  ${message}
+              </div>
+          </div>`;
+        messagesList.appendChild(messageItem);
+
+        messageInput.value = '';
+
+        // this is to send the form to views.py
+        fetch('', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'message': message
+            })
+        })
+            // reponse converted to json
+            .then(response => response.json())
+            //displays the response received using the variable response
+            .then(data => {
+                const response = data.response;
+                const messageItem = document.createElement('li');
+                messageItem.classList.add('message', 'received');
+                messageItem.innerHTML = `
+          <div class="message-text">
+              <div class="message-sender">
+                <b>AI Chatbot</b>
+              </div>
+              <div class="message-content">
+                  <pre>${response}</pre>
+              </div>
+          </div>
+            `;
+                messagesList.appendChild(messageItem);
+            });
+    });
+
+</script>
+
+{% endblock %}

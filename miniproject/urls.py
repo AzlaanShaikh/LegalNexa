@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('legal.urls')),
     path('',include('chatbot.urls')),
+    path('',include('pdf_query.urls')),
+    
     
 ]

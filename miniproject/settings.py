@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'legal',
     'chatbot',
+    'pdf_query',
 ]
 
 MIDDLEWARE = [

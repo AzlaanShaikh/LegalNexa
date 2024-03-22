@@ -4,24 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/map.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <title>Document</title>
+    <style>
+        #nav{
+    justify-content: space-between;
+}
+#nav2{
+    display: flex;
+    margin-right: 675px;
+    gap:30px;
+}
+h4{
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+}
+a{
+    color: #ddd;
+}
+h1{
+    margin-left: -49px
+}
+    </style>
 </head>
 <body style="background-color: black;">
-        <div id="nav">
-            <h3>LegalNexa</h3>
-            <div id="nav-part2">
-                <a href="upload_pdf"><h4>Home</h4></a>
-                <h4>About Us</h4>
-                <h4>Contact</h4>
+    <div class="card-header bg-dark text-white d-flex" id="nav">
+        <h3>LegalNexa</h3>
+        <div id="nav2">
+                <h4 class="text-md"><a href="/"> Home</a></h4>
+                <h4><a href="upload_pdf">PDF Summarizer</a></h4>
+                <h4><a href="/map">Map</a></h4>
             </div>
-            <div id="nav-part3">
-                <div id="circle"></div>
-            </div>
-        </div>
+    </div>
+
     
         <div id="map">
         <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1vCceoM85RxP9eTYH5hz8ADLzn5gioq8&ehbc=2E312F&ll=18.97145237012057%2C72.83598282979956&z=15" width="640" height="480" frameborder=”0″ style=”border:0″></iframe>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
