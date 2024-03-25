@@ -101,17 +101,26 @@ a{
     <div class="card flex-grow-1">
         <div class="card-header bg-dark text-white d-flex" id="nav">
             <h3>LegalNexa</h3>
-            <div id="nav2">
+                <div id="nav2">
                     <h4 class="text-md"><a href="/"> Home</a></h4>
-                    <h4><a href="upload_pdf">PDF Summarizer</a></h4>
-                    <h4><a href="/map">Map</a></h4>
+                    <h4><a href="{% url 'upload_pdf' %}">PDF Summarizer</a></h4>
+                    <h4><a href="{% url 'map' %}">Map</a></h4>
+                    <p>Session ID: {{ request.session.session_key }}</p>
+                    
+                    {% for session_id in past_session_ids %}
+                        <a href="{% url 'chatbot' pk=session_id %}">Chat No. :- {{ session_id }}</a><br>
+                    {% endfor %}
+                    <h4><a href="{% url 'admin:index' %}">Admin</a></h4>
                 </div>
+
         </div>
-        <div class="card-header bg-dark text-white">Chat</div>
+        <div class="card-header bg-dark text-white"> <b>Chat</b>
+        <a href="{% url 'create-chat' %}" >Create Chat</a>
+        </div>
         
         {% if user.is_authenticated %}
         <div class="card-header bg-dark text-white"> <b>Welcome, {{user.username}}</b> <a style="color:yellowgreen"
-                href="logout">Logout</a></div>
+                href="{% url 'logout' %}">Logout</a></div>
         {% else %}
         <div class="card-header bg-dark text-white"><a style="color:yellowgreen" href="login">LogIn</a> <a
                 style="color:yellowgreen" href="register">Register</a></div>
@@ -133,32 +142,33 @@ a{
 
 
                 {% for chat in chats %}
-                {% if chat.user == request.user%}
+                    
+                    {% if chat.session_id == chat.session_id %}
+                        <li class="message sent">
+                            <div class="message-text">
+                                <div class="message-sender">
+                                    <b>You</b>
+                                </div>
+                                <div class="message-content">
+                                    {{ chat.message }}
+                                </div>
+                            </div>
+                        </li>
 
-                <li class="message sent">
-                    <div class="message-text">
-                        <div class="message-sender">
-                            <b>You</b>
-                        </div>
-                        <div class="message-content">
-                            {{chat.message}} <!--  it will display the current loggedin user -->
-                        </div>
-                    </div>
-                </li>
-
-                <li class="message received">
-                    <div class="message-text">
-                        <div class="message-sender">
-                            <b>Chatbot</b>
-                        </div>
-                        <div class="message-content">
-                            <pre>{{chat.response}}</pre> <!--  it will display the current loggedin user -->
-                        </div>
-                    </div>
-                </li>
-
-                {% endif %}
+                        <li class="message received">
+                            <div class="message-text">
+                                <div class="message-sender">
+                                    <b>Chatbot</b>
+                                </div>
+                                <div class="message-content">
+                                    <pre>{{ chat.response }}</pre>
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                    
                 {% endfor %}
+
 
             </ul>
 
@@ -182,7 +192,10 @@ a{
     const messagesList = document.querySelector('.messages-list');
     const messageForm = document.querySelector('.message-form');
     const messageInput = document.querySelector('.message-input');
-
+    const sessionId = document.getElementById('session-id').getAttribute('data-session-id');
+    const pastSessionIds = JSON.parse('{{ past_session_ids|safe }}');
+    
+    console.log(pastSessionIds);
     messageForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -212,7 +225,8 @@ a{
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
                 'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                'message': message
+                'message': message,
+                'session_id': sessionId
             })
         })
             // reponse converted to json

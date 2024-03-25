@@ -5,6 +5,8 @@ from openai import OpenAI
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Chat
+from .forms import ChatForm
+from django.shortcuts import redirect
 
 from django.utils import timezone
 # Create your views here.
@@ -29,19 +31,51 @@ def ask_openai(message):
     answer = response.choices[0].message.content.strip()
     return answer
 
-def chatbot(request):
-    chats = Chat.objects.filter(user=request.user)
-    print('chatbot start')
-    if request.method == 'POST':
-        # user prompt stored in variable message in fetch from chatbot.html
-        message = request.POST.get('message')
-        # Here we can return a variable with the response sent by openai
-        response = ask_openai(message) # ask_openai(message)
 
-        chat = Chat(user=request.user, message=message,response= response,created_at=timezone.now())
+
+
+
+def chatbot(request, pk=None):
+    # Retrieve session ID from request 
+    if pk is None:
+        # If pk is not provided, fetch the current session ID
+        session_id = request.session.session_key
+    else:
+        # If pk is provided, set it as the session ID
+        session_id = pk
+        if session_id != request.session.session_key:
+            # If pk is different from the current session ID, update the session ID
+            request.session.cycle_key()  # Refresh the session ID
+    # Filter chats based on user and session ID
+    chats = Chat.objects.filter(user=request.user, session_id=session_id)
+
+    # Check if a different session ID is provided
+    
+
+    if request.method == 'POST':
+        # User prompt stored in variable message from chatbot.html
+        message = request.POST.get('message')
+
+        # variable with the response sent by openai
+        response = ask_openai(message)  
+
+        # Create a new chat entry with user, message, response, session_id, and current timestamp
+        chat = Chat(user=request.user, message=message, response=response, session_id=session_id, created_at=timezone.now())
         chat.save()
-        return JsonResponse({ 'message' : message, 'response' : response })
-    return render(request, 'chatbot.html', {'chats':chats})
+
+        return JsonResponse({'message': message, 'response': response})
+    
+    # Retrieve distinct past session IDs
+    past_session_ids = Chat.objects.values_list('session_id', flat=True).distinct()
+
+    # Pass session_id to the template for further processing if needed
+    return render(request, 'chatbot.html', {'chats': chats, 'session_id': session_id, 'past_session_ids': past_session_ids})
+
+def createChat(request):
+    form = ChatForm()
+    
+    context = {'form':form}
+    return render(request,'newChat_form.html',context)
 
 def login(request):
     if request.method == 'POST':
@@ -87,6 +121,8 @@ def register(request):
 def logout(request):
     auth.logout(request)
     return redirect('login')
+
 def map(request):
 
     return render(request,'map.html')
+
