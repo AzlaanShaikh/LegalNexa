@@ -49,7 +49,7 @@ This project is a **Legal Documentation Assistant** designed to help users inter
 Ensure you have the following installed:
 - Python 3.8+
 - Node.js & npm
-- PostgreSQL
+- Vector Database
 - Google Maps API key
 - OpenAI API key
 
