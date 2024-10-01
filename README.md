@@ -166,29 +166,3 @@ cd legal-documentation-assistant
 
 ---
 
-## Contributing
-
-We welcome contributions! Please follow these steps:
-1. Fork the repository.
-2. Create a new feature branch (`git checkout -b feature-branch-name`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature-branch-name`).
-5. Create a new Pull Request.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
----
-
-## Contact
-
-For any questions or inquiries, please contact:
-
-- **Azlaan Shaikh**: azlaan@example.com
-
----
-
-This README provides a complete overview of your project. You can update and tweak it based on specific requirements or additional features!
