@@ -35,7 +35,7 @@ This project is a **Legal Documentation Assistant** designed to help users inter
 - **OpenAI**: GPT models are used for document comprehension, chat responses, and contextual legal assistance.
 
 ### Databases:
-- **PostgreSQL**: For storing user data and uploaded legal documents.
+- **Vector Database**: For storing and retriving documents.
 
 ### APIs & External Services:
 - **Google Maps API**: Used for law firm location services.
