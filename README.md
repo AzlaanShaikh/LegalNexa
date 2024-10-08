@@ -26,8 +26,8 @@ This project is a **Legal Documentation Assistant** designed to help users inter
 ## Tech Stack
 
 ### Frontend:
-- **React** for building the user interface.
-- **Tailwind CSS** for responsive and customizable UI design.
+- **HTML** for building the user interface.
+- **CSS** for responsive and customizable UI design.
 
 ### Backend:
 - **Django**: Backend framework to handle user authentication, file management, and API integration.
